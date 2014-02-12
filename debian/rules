@@ -11,46 +11,50 @@ ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
 CONFARGS = --host=$(DEB_HOST_GNU_TYPE)
 endif
 
-CFLAGS = -Wall -g
+CFLAGS := $(shell dpkg-buildflags --get CFLAGS)
+CPPFLAGS := $(shell dpkg-buildflags --get CPPFLAGS)
+LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
+
 INSTALL = install
 INSTALL_FILE    = $(INSTALL) -p    -o root -g root  -m  644
 INSTALL_PROGRAM = $(INSTALL) -p    -o root -g root  -m  755
 INSTALL_SCRIPT  = $(INSTALL) -p    -o root -g root  -m  755
 INSTALL_DIR     = $(INSTALL) -p -d -o root -g root  -m  755
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-CFLAGS += -O0
-else
-CFLAGS += -O2
-endif
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 INSTALL_PROGRAM += -s
 endif
 
+build: build-arch build-indep
+build-indep:
 
-all build: Makefile
+build-arch: Makefile
 	$(MAKE) INSTALL_PROGRAM="$(INSTALL_PROGRAM)"
 ifeq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	LC_ALL=C $(MAKE) check
 endif
 endif
-	touch build
+	touch build-arch
 
 clean:
-	rm -f debian/substvars debian/files build config.log config.cache 
+	rm -f debian/substvars debian/files build-arch config.log config.cache
 	rm -rf debian/tmp autom4te.cache
 	find . -type f -a \( -name \#\*\# -o -name .\*\~ -o -name \*\~ -o -name DEADJOE -o -name \*.orig -o -name \*.rej -o -name \*.bak -o -name .\*.orig -o -name .\*.rej -o -name .SUMS -o -name TAGS -o -name core -o \( -path \*/.deps/\* -a -name \*.P \) \) -exec rm -f {} \;
 	test ! -f Makefile || $(MAKE) distclean
 
 Makefile: Makefile.in
-	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr \
+	./configure --prefix=/usr \
 			--exec-prefix=/ \
 			--datadir=/usr/share \
 			--mandir=/usr/share/man \
 			--infodir=/usr/share/info \
 			--enable-html \
-			--without-included-regex $(CONFARGS)
+			--without-included-regex \
+                        CFLAGS="$(CFLAGS)" \
+                        CPPFLAGS="$(CPPFLAGS)" \
+                        LDFLAGS="$(LDFLAGS)" \
+                        $(CONFARGS)
 
 
 binary: binary-indep binary-arch
@@ -98,3 +102,5 @@ endif
 checkroot:
 	test root = "`whoami`"
 
+
+.PHONY: checkroot binary build build-indep

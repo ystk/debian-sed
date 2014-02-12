@@ -1,3 +1,26 @@
+sed (4.2.1-10) unstable; urgency=low
+
+  * Bump to Standards-Version 3.9.2.
+  * Use dpkg-buildflags.  closes: #653718.
+  * Add build-arch and build-indep targets.
+  * Change selinux build-dependency to [linux-any].
+
+ -- Clint Adams <clint@debian.org>  Fri, 30 Dec 2011 12:21:54 -0500
+
+sed (4.2.1-9) unstable; urgency=low
+
+  * doc/sed-in.texi: Fix double negation in comment, escape
+    file names.
+  * doc/sed.x: Order commands alphabetically.
+
+ -- Clint Adams <clint@debian.org>  Fri, 11 Feb 2011 16:55:05 -0500
+
+sed (4.2.1-8) unstable; urgency=low
+
+  * Bump to Standards-Version 3.9.1.
+
+ -- Clint Adams <clint@gnu.org>  Mon, 15 Nov 2010 21:05:27 -0500
+
 sed (4.2.1-7) unstable; urgency=low
 
   * Bump to Standards-Version 3.8.4.
