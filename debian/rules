@@ -21,8 +21,17 @@ INSTALL_PROGRAM = $(INSTALL) -p    -o root -g root  -m  755
 INSTALL_SCRIPT  = $(INSTALL) -p    -o root -g root  -m  755
 INSTALL_DIR     = $(INSTALL) -p -d -o root -g root  -m  755
 
+ifeq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+STRIP := strip
+else
+STRIP := $(DEB_HOST_GNU_TYPE)-strip
+endif
+
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 INSTALL_PROGRAM += -s
+ifneq (strip,$(STRIP))
+INSTALL_PROGRAM += --strip-program=$(STRIP)
+endif
 endif
 
 build: build-arch build-indep
@@ -39,11 +48,14 @@ endif
 
 clean:
 	rm -f debian/substvars debian/files build-arch config.log config.cache
+	rm -f build-aux/config.guess build-aux/config.sub
 	rm -rf debian/tmp autom4te.cache
 	find . -type f -a \( -name \#\*\# -o -name .\*\~ -o -name \*\~ -o -name DEADJOE -o -name \*.orig -o -name \*.rej -o -name \*.bak -o -name .\*.orig -o -name .\*.rej -o -name .SUMS -o -name TAGS -o -name core -o \( -path \*/.deps/\* -a -name \*.P \) \) -exec rm -f {} \;
 	test ! -f Makefile || $(MAKE) distclean
 
 Makefile: Makefile.in
+	cp -a /usr/share/misc/config.guess /usr/share/misc/config.sub \
+		build-aux/
 	./configure --prefix=/usr \
 			--exec-prefix=/ \
 			--datadir=/usr/share \
@@ -68,7 +80,7 @@ binary-arch: build checkroot
 # Install sed
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	strip --remove-section=.comment --remove-section=.note \
+	$(STRIP) --remove-section=.comment --remove-section=.note \
 		--strip-unneeded debian/tmp/bin/sed
 endif
 	rm -f $(tmpdir)/usr/share/info/dir*

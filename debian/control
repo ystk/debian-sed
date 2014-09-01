@@ -2,8 +2,8 @@ Source: sed
 Section: utils
 Priority: required
 Maintainer: Clint Adams <clint@debian.org>
-Standards-Version: 3.9.2
-Build-Depends: texinfo, gettext, libselinux-dev [linux-any]
+Standards-Version: 3.9.5
+Build-Depends: texinfo, gettext, libselinux-dev [linux-any], autotools-dev
 Vcs-Git: git://git.debian.org/users/clint/sed.git
 Vcs-Browser: http://git.debian.org/?p=users/clint/sed.git;a=summary
 Homepage: http://www.gnu.org/software/sed/

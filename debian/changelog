@@ -1,3 +1,32 @@
+sed (4.2.2-4) unstable; urgency=medium
+
+  * Add Samuel Thibault's backport of upstream patch to define
+    PATH_MAX as 200 on the Hurd.  closes: #725218.
+
+ -- Clint Adams <clint@debian.org>  Sun, 09 Feb 2014 12:40:46 -0500
+
+sed (4.2.2-3) unstable; urgency=medium
+
+  * Patch from Colin Watson to update config.{guess,sub} at build
+    time.  closes: #732073.
+  * Bump to Standards-Version 3.9.5.
+
+ -- Clint Adams <clint@debian.org>  Fri, 13 Dec 2013 23:40:41 -0500
+
+sed (4.2.2-2) unstable; urgency=low
+
+  * Patch from Colin Watson to use appropriate strip program
+    when cross-building.  closes: #695315.
+
+ -- Clint Adams <clint@debian.org>  Sat, 27 Jul 2013 21:58:58 -0400
+
+sed (4.2.2-1) unstable; urgency=low
+
+  * New upstream version.  closes: #697829.
+  * Bump to Standards-Version 3.9.4.
+
+ -- Clint Adams <clint@debian.org>  Thu, 09 May 2013 01:05:30 -0400
+
 sed (4.2.1-10) unstable; urgency=low
 
   * Bump to Standards-Version 3.9.2.
