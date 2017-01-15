@@ -107,6 +107,8 @@ endif
 	cd debian/tmp && find * -type f ! -regex '^DEBIAN/.*' -print0 | xargs -r0 md5sum > DEBIAN/md5sums
 
 # Build the packgae
+	find $(tmpdir) ! -type l -print0 | xargs -0r chmod go=rX,u+rw,a-s
+
 	dpkg-shlibdeps -dPre-Depends $(tmpdir)/bin/sed
 	dpkg-gencontrol -isp
 	dpkg --build debian/tmp ..

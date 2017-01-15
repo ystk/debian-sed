@@ -1,3 +1,11 @@
+sed (4.2.2-4+deb8u1) stable; urgency=medium
+
+  [ Jérémy Bobbio ]
+  * Ensure consistent permissions with different umasks.
+    closes: #774347, #835516.
+
+ -- Clint Adams <clint@debian.org>  Fri, 09 Sep 2016 18:07:57 -0400
+
 sed (4.2.2-4) unstable; urgency=medium
 
   * Add Samuel Thibault's backport of upstream patch to define
